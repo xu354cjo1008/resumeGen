@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"html/template"
 	"log"
 	"os"
@@ -36,10 +37,30 @@ const tmpl = `<div class="col-md-6 col-sm-12">
 				<h3>{{ .Profile.Label }}</h3>
 			  </div>`
 
-func main() {
-	//	tempFile := flag.String("template", "template.tmpl", "template file")
+func makeHtml(data Resume, tmpl string) error {
+	funcs := template.FuncMap{
+		"nl2br": func(text string) template.HTML {
+			return template.HTML(strings.Replace(template.HTMLEscapeString(text), "\n", "<br>", -1))
+		},
+	}
 
-	//	flag.Parse()
+	t, err := template.New("resume").Funcs(funcs).ParseFiles("template/index.tmpl", "template/profile.tmpl", "template/experience.tmpl")
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	if err := t.ExecuteTemplate(os.Stdout, "index", data); err != nil {
+		log.Println(err)
+		return err
+	}
+	return nil
+}
+
+func main() {
+	tempFile := flag.String("template", "template.tmpl", "template file")
+
+	flag.Parse()
 
 	resume := Resume{
 		Profile: Profile{
@@ -63,19 +84,8 @@ func main() {
 		},
 	}
 
-	funcs := template.FuncMap{
-		"nl2br": func(text string) template.HTML {
-			return template.HTML(strings.Replace(template.HTMLEscapeString(text), "\n", "<br>", -1))
-		},
-	}
-
-	t, err := template.New("resume").Funcs(funcs).ParseFiles("template/index.tmpl", "template/profile.tmpl", "template/experience.tmpl")
+	err := makeHtml(resume, *tempFile)
 	if err != nil {
-		log.Println(err)
-		os.Exit(-1)
-	}
-
-	if err := t.ExecuteTemplate(os.Stdout, "index", resume); err != nil {
 		log.Println(err)
 		os.Exit(-1)
 	}
