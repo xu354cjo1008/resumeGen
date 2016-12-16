@@ -1,0 +1,26 @@
+{{define "project"}}
+{{if .Projects}}
+<section class="row">
+  <header class="col-md-3">
+    <h3>Projects</h3>
+  </header>
+  <div class="col-md-9">
+    {{range .Projects}}
+    <div class="item">
+      <h3>{{.Name}}</h3>
+      {{if .Role}}
+      <strong>{{.Role}}</strong>
+      <br />
+      {{end}}
+      {{if .StartDate}}
+      <p class="sticky">{{.StartDate}}-{{.EndDate}}</p>
+      {{end}}
+      {{if .Summary}}
+      <p>{{nl2br .Summary}}</p>
+      {{end}}
+    </div>
+    {{end}}
+  </div>
+</section>
+{{end}}
+{{end}}

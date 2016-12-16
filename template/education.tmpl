@@ -1,0 +1,25 @@
+{{define "education"}}
+{{if .Educations}}
+<section class="row">
+  <header class="col-md-3">
+    <h3>Education</h3>
+  </header>
+  <div class="col-md-9">
+    {{range .Educations}}
+    <div class="">
+      <h3>{{.Location}}</h3>
+      {{if .Major}}
+      <p>{{.Major}}</p>
+      {{end}}
+      {{if .StartDate}}
+      <p class="sticky">{{.StartDate}}-{{.EndDate}}</p>
+      {{end}}
+      {{if .Summary}}
+      <p>{{.Summary}}</p>
+      {{end}}
+    </div>
+    {{end}}
+  </div>
+</section>
+{{end}}
+{{end}}
