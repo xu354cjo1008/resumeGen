@@ -1,0 +1,3 @@
+package: github.com/xu354cjo1008/resumeGen
+import:
+- package: gopkg.in/yaml.v2
