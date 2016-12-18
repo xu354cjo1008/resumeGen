@@ -1,0 +1,31 @@
+Profile:
+   Name:    "ChingChang Li"
+   Label:   "Software Engineer"
+   Email:   "xu354cjo1008@gmail.com"
+   Github:  "https://github.com/xu354cjo1008"
+   Summary: "A software engineer from Taiwan, who love technology, programing and mathmatics"
+Experiences:
+  - Company:   "QNAP System"
+    Role:      "Software Developer"
+    StartDate: "2015.04"
+    EndDate:   "2016.10"
+    Summary: |
+      1. Linux kernel storage system study and development
+      2. SAS expander firmware development
+      3. Linux hardware crypto system integration
+      4. System performance analysis and tuning
+Projects:
+  - Name:      "Linux storage development and system analysis"
+    Role:      "Function developer and performance engineer"
+    StartDate: "2015.06"
+    EndDate:   "2016.10"
+    Summary: |
+      1. SAS expander firmware development
+      2. SAS protocal development and analysis
+      3. Linux storage stack study and function development
+      4. Storage performance analysys and tuning
+Educations:
+  - Location:  "National Taiwan University"
+    Major:     "Electric Engineering graduate school"
+    StartDate: "2012.09"
+    EndDate:   "2014.07"
