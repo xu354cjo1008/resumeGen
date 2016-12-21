@@ -4,6 +4,7 @@ import (
 	"errors"
 	"flag"
 	"html/template"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -39,7 +40,7 @@ func configure() error {
 	return nil
 }
 
-func makeHtml(data Resume, tmpl string) error {
+func makeHtml(data Resume, tmpl string, output io.Writer) error {
 	funcs := template.FuncMap{
 		"nl2br": func(text string) template.HTML {
 			return template.HTML(strings.Replace(template.HTMLEscapeString(text), "\n", "<br>", -1))
@@ -57,7 +58,7 @@ func makeHtml(data Resume, tmpl string) error {
 		return err
 	}
 
-	if err := t.ExecuteTemplate(os.Stdout, "index", data); err != nil {
+	if err := t.ExecuteTemplate(output, "index", data); err != nil {
 		log.Println(err)
 		return err
 	}
@@ -70,13 +71,13 @@ func main() {
 	var result *Resume
 	tempFile := flag.String("template", "example", "template file")
 	userFile := flag.String("user", "user.yaml", "user resume informance file path")
+	output := flag.String("output", "stdout", "output to file or stdout")
 
 	flag.Parse()
 
 	err = configure()
 	if err != nil {
-		log.Println(err)
-		os.Exit(-1)
+		log.Fatal(err)
 	}
 
 	file, err = ioutil.ReadFile(*userFile)
@@ -88,7 +89,16 @@ func main() {
 		log.Fatal(err)
 	}
 
-	err = makeHtml(*result, path.Join(config.templatePath, *tempFile))
+	var outputFile io.Writer = nil
+	if *output != "stdout" {
+		outputFile, err = os.OpenFile(*output, os.O_CREATE|os.O_WRONLY, 0666)
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		outputFile = os.Stdout
+	}
+	err = makeHtml(*result, path.Join(config.templatePath, *tempFile), outputFile)
 	if err != nil {
 		log.Fatal(err)
 		os.Exit(-1)
